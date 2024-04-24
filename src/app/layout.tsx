@@ -1,22 +1,27 @@
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
-import './globals.css'
+import type { Metadata } from "next";
+import { Oswald, Rubik_Mono_One } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] })
+const oswald = Oswald({ subsets: ["latin"], variable: "--font-oswald" });
+const rubik = Rubik_Mono_One({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-rubik-mono-one",
+});
 
 export const metadata: Metadata = {
-  title: 'Next.js + Replicate + Typescript',
-  description: 'Replicate Typescript Starter',
-}
+  title: "AI - Image Generator For Free",
+  description: "Dream your image and make it real!",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={oswald.className}>{children}</body>
     </html>
-  )
+  );
 }

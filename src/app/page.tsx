@@ -4,13 +4,12 @@ import Head from "next/head";
 import Image from "next/image";
 
 import { Prediction } from "replicate";
+import Footer from "./components/Footer";
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function Home() {
-
   const [prediction, setPrediction] = useState<Prediction | null>(null);
   const [error, setError] = useState(null);
-
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -32,50 +31,67 @@ export default function Home() {
       prediction.status !== "failed"
     ) {
       await sleep(1000);
-      const response = await fetch("/api/predictions/" + prediction.id, { cache: 'no-store' });
+      const response = await fetch("/api/predictions/" + prediction.id, {
+        cache: "no-store",
+      });
       prediction = await response.json();
       if (response.status !== 200) {
         setError(prediction.detail);
         return;
       }
-      console.log({ prediction })
+      console.log({ prediction });
       setPrediction(prediction);
     }
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-24 bg-gray-100">
-      <div className="flex flex-col z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex bg-white p-10 border-solid border-2 border-gray-300 rounded-3xl">
+    <main className="w-screen font-sans bg-white">
+      <div className="flex flex-col z-10 max-w-screen w-full items-center justify-between font-mono text-sm lg:flex bg-slate-50">
         <Head>
-          <title>Replicate + Next.js</title>
+          <title>Image Generator</title>
         </Head>
 
-        <p className="mb-4 text-lg text-gray-700">
+        <p className="p-1 text-[10px] text-gray-300 bg-slate-950 w-full text-center">
           Dream something with{" "}
-          <a href="https://replicate.com/stability-ai/stable-diffusion" className="text-blue-500 hover:underline">
+          <a
+            href="https://replicate.com/stability-ai/stable-diffusion"
+            className="text-blue-200 hover:underline"
+          >
             SDXL
-          </a>:
+          </a>
+          :
         </p>
 
-        <form onSubmit={handleSubmit} className="flex flex-col items-center w-full">
-          <input
-            type="text"
-            name="prompt"
-            placeholder="Enter a prompt to display an image"
-            className="px-4 py-2 w-full border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          />
-          <button
-            type="submit"
-            className="px-4 py-2 mt-4 w-full bg-blue-500 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        <section className="w-full bg-image py-48">
+          <h1 className="top-0 w-full absolute mt-14 text-center text-3xl md:text-5xl font-mono font-extrabold text-slate-100 uppercase">
+            Dream your image and <br /> make it true!
+          </h1>
+          <form
+            onSubmit={handleSubmit}
+            className="md:mt-4 flex flex-row justify-center items-center m-auto w-[350px] md:w-[512px] lg:w-[1024px]"
           >
-            Go!
-          </button>
-        </form>
+            <input
+              type="text"
+              name="prompt"
+              placeholder="Enter a prompt to display an image"
+              className="px-4 py-2 w-full rounded-l-md focus:outline-none md:text-lg focus:ring-2 focus:ring-yellow-500"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 w-[15%] md:text-lg uppercase font-sans font-bold bg-fuchsia-500 rounded-r-md text-white hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+            >
+              Go!
+            </button>
+          </form>
+        </section>
 
         {error && <div className="mt-4 text-red-500">{error}</div>}
 
         {prediction && (
-          <div className="mt-4">
+          <div className="m-4">
+            <p className="my-4 text-center text-lg rounded-md text-slate-200 bg-teal-500 py-2 w-full">
+              status: {prediction.status}
+            </p>
             {prediction.output && (
               <div className="flex flex-col items-center justify-center w-full">
                 <Image
@@ -87,10 +103,11 @@ export default function Home() {
                 />
               </div>
             )}
-            <p className="mt-4 text-lg text-gray-700">status: {prediction.status}</p>
           </div>
         )}
       </div>
+
+      <Footer />
     </main>
-  )
+  );
 }
