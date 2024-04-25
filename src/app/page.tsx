@@ -2,9 +2,40 @@
 import { useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
-
+import { EmblaOptionsType } from "embla-carousel";
 import { Prediction } from "replicate";
 import Footer from "./components/Footer";
+import Carousel from "./components/Carousel";
+import Steps from "./components/Steps";
+
+const OPTIONS: EmblaOptionsType = { loop: true };
+const SLIDES = [
+  {
+    id: 1,
+    src: "/car.webp",
+    alt: "car",
+  },
+  {
+    id: 2,
+    src: "/lion.png",
+    alt: "lion",
+  },
+  {
+    id: 3,
+    src: "/girl.webp",
+    alt: "girl",
+  },
+  {
+    id: 4,
+    src: "/bear.webp",
+    alt: "bear",
+  },
+  {
+    id: 5,
+    src: "/studio.webp",
+    alt: "studio",
+  },
+];
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export default function Home() {
@@ -51,7 +82,7 @@ export default function Home() {
           <title>Image Generator</title>
         </Head>
 
-        <p className="p-1 text-[10px] text-gray-300 bg-slate-950 w-full text-center">
+        <p className="p-1 text-[10px] text-gray-300 bg-[#1b1624] w-full text-center">
           Dream something with{" "}
           <a
             href="https://replicate.com/stability-ai/stable-diffusion"
@@ -78,7 +109,7 @@ export default function Home() {
             />
             <button
               type="submit"
-              className="px-4 py-2 w-[15%] md:text-lg uppercase font-sans font-bold bg-fuchsia-500 rounded-r-md text-white hover:bg-fuchsia-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+              className="px-4 py-2 w-[15%] md:text-lg uppercase font-sans font-bold bg-pink-500 rounded-r-md text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-yellow-500"
             >
               Go!
             </button>
@@ -89,11 +120,14 @@ export default function Home() {
 
         {prediction && (
           <div className="m-4">
-            <p className="my-4 text-center text-lg rounded-md text-slate-200 bg-teal-500 py-2 w-full">
-              status: {prediction.status}
-            </p>
+            <div className="w-[95%] bg-teal-500 m-auto">
+              <p className="my-4 text-center text-lg rounded-md text-slate-200 w-screen">
+                status: {prediction.status}
+              </p>
+            </div>
+
             {prediction.output && (
-              <div className="flex flex-col items-center justify-center w-full">
+              <div className="flex flex-col items-center m-auto justify-center w-[90%]">
                 <Image
                   src={prediction.output[prediction.output.length - 1]}
                   alt="output"
@@ -106,6 +140,17 @@ export default function Home() {
           </div>
         )}
       </div>
+
+      <section className="my-10 w-screen border-y border-y-slate-300">
+        <h3 className="my-4 w-full text-center text-2xl md:text-5xl font-mono font-bold text-orange-500">
+          Some images created by our AI
+        </h3>
+        <Carousel slides={SLIDES} options={OPTIONS} />
+      </section>
+
+      <section>
+        <Steps />
+      </section>
 
       <Footer />
     </main>
