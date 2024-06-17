@@ -14,7 +14,7 @@
     "embla-carousel-auto-scroll": "^8.0.2",
     "embla-carousel-autoplay": "^8.0.2",
     "embla-carousel-react": "^8.0.2",
-    "next": "14.0.3",
+    "next": "14.2.4",
     "react": "^18",
     "react-dom": "^18",
     "replicate": "^0.22.0"
